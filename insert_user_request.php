@@ -5,10 +5,11 @@ include("connect.db.php");
 include("commons/codes/usuarios_responses.php");
 include("commons/format_response.php");
 
+
+$rawBody = file_get_contents('php://input');
+$data = json_decode($rawBody, true);
+
 try {
-    //code...
-
-
     $connect = connect_db($dbname, $username, $password);
 
     $sql = "INSERT INTO users (username, password, first_name, last_name, email) 
@@ -16,11 +17,11 @@ try {
 
     $statement = $connect->prepare($sql);
 
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    $first_name = $_POST['first_name'];
-    $last_name = $_POST['last_name'];
-    $email = $_POST['email'];
+    $username = $data['username'];
+    $password = $data['password'];
+    $first_name = $data['first_name'];
+    $last_name = $data['last_name'];
+    $email = $data['email'];
     $statement->bindParam(':username', $username);
     $statement->bindParam(':password', $password);
     $statement->bindParam(':first_name', $first_name);
@@ -38,6 +39,6 @@ try {
 
 
 } catch (\Throwable $th) {
-    format_response($usuario_response['ERROR']);
-    // print($th->getMessage());
+    format_response($usuario_response['ERROR'], $th->getMessage());
+    // print();
 }
