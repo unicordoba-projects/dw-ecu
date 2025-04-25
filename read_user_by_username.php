@@ -15,7 +15,9 @@ $statement = $connect->prepare($sql);
 $statement->bindParam(':username', $username);
 
 $statement->execute();
+
 $result = $statement->fetch(PDO::FETCH_ASSOC);
+
 
 if (!$result) {
     format_response($usuario_response['READ_ERROR']);

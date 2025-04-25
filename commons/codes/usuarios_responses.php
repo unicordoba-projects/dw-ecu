@@ -11,4 +11,14 @@ $usuario_response = [
         "message"=> "No existen datos registrados",
         "status" => 404
     ],
+    "CREATE" => [
+        "code"=> "CREATE",
+        "message"=> "Datos registrados satisfactoriamente",
+        "status" => 201
+    ],
+    "ERROR" => [
+        "code"=> "ERROR",
+        "message"=> "Error al ejecutr la consulta",
+        "status" => 400
+    ],
 ];
