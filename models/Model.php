@@ -1,6 +1,6 @@
 <?php
 
-require_once('db/DB.php');
+require_once('../db/DB.php');
 
 class Model
 {
@@ -30,12 +30,17 @@ class Model
     
     public function create($values)
     {
-        $sql = "INSERT 
-                INTO {$this->table} ( username, password, first_name, last_name, email ) 
-                VALUES ( :username, :password, :first_name, :last_name, :email )";
+        $columns = implode(',', array_keys($values));
+        $placeHolders = ':'.implode(', :', array_keys($values));
+
+        $sql = "INSERT INTO {$this->table} ( $columns ) VALUES ( $placeHolders )";
         $stm = $this->connection->prepare($sql);
-        $stm->bindParam(":id", $id);
-        $res = $stm->execute();
-        return $res;
+
+        $binds = [];
+        foreach ($values as $key => $value) {
+            $binds[":$key"] = $value;
+        }
+        
+        return $stm->execute($binds);
     }
 }
