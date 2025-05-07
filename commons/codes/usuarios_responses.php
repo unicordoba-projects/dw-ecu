@@ -23,6 +23,11 @@ class UserResponses {
             "message"=> "Error al ejecutr la consulta",
             "status" => 400
         ],
+        "VALIDATION_ERROR" => [
+            "code"=> "ERROR",
+            "message"=> "Error de validación de datos",
+            "status" => 400
+        ],
     ];
     public static function getCode($code) {
         return self::$usuario_response[$code];

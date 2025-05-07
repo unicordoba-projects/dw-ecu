@@ -1,121 +1,81 @@
 <?php
-namespace App\Controllers;
 
-use App\Models\User;
-use Core\View;
+include ("../models/UserModel.php");
+require_once '../views/View.php';
+require_once("../commons/codes/usuarios_responses.php");
+require_once("response.php");
 
-class UserController
+class UsersController
 {
     private $userModel;
-    
-    public function __construct()
-    {
-        $this->userModel = new User();
+
+    public function __construct(){
+        $this->userModel = new UserModel();
     }
-    
-    // GET /users - Listar todos los usuarios
-    public function index()
+
+    // GET /users
+    public function index(): void
     {
-        $users = $this->userModel->getAll();
-        return View::render('users/index', ['users' => $users]);
+        $res = $this->userModel->getAll();
+        View::format_response(UserResponses::getCode('READ'), $res);
     }
-    
-    // GET /users/create - Formulario para crear usuario
-    public function create()
+
+    // GET /user/{id}
+    public function show(string $id): void
     {
-        return View::render('users/create');
+        echo "Mostrando usuario con ID = {$id}";
     }
-    
-    // POST /users - Guardar nuevo usuario
-    public function store()
+
+    // POST /users
+    public function store(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $data = [
-                'name' => $_POST['name'] ?? '',
-                'email' => $_POST['email'] ?? '',
-                'password' => $_POST['password'] ?? ''
-            ];
-            
-            // Validación simple
-            if (empty($data['name']) || empty($data['email']) || empty($data['password'])) {
-                $errors = ['Todos los campos son obligatorios'];
-                return View::render('users/create', ['errors' => $errors, 'data' => $data]);
-            }
-            
-            if ($this->userModel->create($data)) {
-                header('Location: /users');
-                exit;
-            } else {
-                $errors = ['Error al crear el usuario'];
-                return View::render('users/create', ['errors' => $errors, 'data' => $data]);
-            }
-        }
-    }
-    
-    // GET /users/{id} - Ver un usuario específico
-    public function show($id)
-    {
-        $user = $this->userModel->findById($id);
+        $rawBody = file_get_contents("php://input");
+        $data = json_decode($rawBody, true);
         
-        if (!$user) {
-            header("HTTP/1.0 404 Not Found");
-            return View::render('errors/404');
-        }
-        
-        return View::render('users/show', ['user' => $user]);
-    }
-    
-    // GET /users/{id}/edit - Formulario para editar usuario
-    public function edit($id)
-    {
-        $user = $this->userModel->findById($id);
-        
-        if (!$user) {
-            header("HTTP/1.0 404 Not Found");
-            return View::render('errors/404');
-        }
-        
-        return View::render('users/edit', ['user' => $user]);
-    }
-    
-    // PUT /users/{id} - Actualizar usuario
-    public function update($id)
-    {
-        // Para manejar método PUT en HTML forms
-        parse_str(file_get_contents("php://input"), $putData);
-        
-        $data = [
-            'name' => $putData['name'] ?? '',
-            'email' => $putData['email'] ?? ''
-        ];
-        
-        // Validación simple
-        if (empty($data['name']) || empty($data['email'])) {
-            $errors = ['Nombre y email son obligatorios'];
-            $user = $this->userModel->findById($id);
-            return View::render('users/edit', ['errors' => $errors, 'user' => $user]);
-        }
-        
-        if ($this->userModel->update($id, $data)) {
-            header('Location: /users/' . $id);
-            exit;
-        } else {
-            $errors = ['Error al actualizar el usuario'];
-            $user = $this->userModel->findById($id);
-            return View::render('users/edit', ['errors' => $errors, 'user' => $user]);
-        }
-    }
-    
-    // DELETE /users/{id} - Eliminar usuario
-    public function delete($id)
-    {
-        if ($this->userModel->delete($id)) {
-            header('Location: /users');
-            exit;
-        } else {
-            $errors = ['Error al eliminar el usuario'];
-            $user = $this->userModel->findById($id);
-            return View::render('users/show', ['errors' => $errors, 'user' => $user]);
-        }
+        $this->userModel->create($data);
+
+        echo "Creando un nuevo usuario";
     }
 }
+
+
+// include ('db/UserDB.php');
+// include ('models/UserModel.php');
+// require_once 'views/View.php';
+// require_once("commons/codes/usuarios_responses.php");
+// require_once("response.php");
+
+// class UsersController {
+
+//     private $userModel;
+
+//     public function __construct() {
+//         $this->userModel = new UserModel();
+//     }
+
+//     public function index() { 
+//         $result = $this->userModel->getAll();
+//         View::format_response(UserResponses::getCode('READ'), $result);
+//     }
+    
+//     public function create() {    
+//         return [
+//             "action" => "CREATE"
+//         ];
+//     }
+
+//     public function read() {    
+//         return [
+//             "action" => "READ"
+//         ];
+//     }
+
+//     public function update() {    
+
+//     }
+
+//     public function delete() {    
+
+//     }
+
+// }

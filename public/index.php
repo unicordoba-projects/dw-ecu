@@ -68,3 +68,13 @@ if (!($requestUri === '/login' && $requestMethod === 'POST')) {
 
 $router->dispatch($requestUri, $requestMethod);
 
+
+
+
+// pm.test("SetSessionToken", function () {
+//     if(pm.response.to.have.status(200)){
+//         var jsonData = pm.response.json();
+//         pm.globals.unset("SESSION_TOKEN")
+//         pm.globals.set("SESSION_TOKEN", `${jsonData.token}`);
+//     }
+// });

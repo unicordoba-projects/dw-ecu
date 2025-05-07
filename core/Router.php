@@ -1,5 +1,6 @@
 <?php
 // core/Router.php
+namespace Core;
 
 class Router
 {

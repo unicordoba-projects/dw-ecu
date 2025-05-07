@@ -5,7 +5,7 @@ use Firebase\JWT\JWT;
 
 class AuthController
 {
-    private string $jwtSecret = 'TU_CLAVE_SECRETA_AQUI';  // Debe ser la misma que en index.php
+    private string $jwtSecret = 'rgjjYtrrfGhjiuYtrDFGhjKoiuYTrfgHJkoiuYTGHjOiuYtGHjI';  // Debe ser la misma que en index.php
     private int    $tokenTTL  = 3600;                     // segundos de validez (1 hora)
 
     /**
