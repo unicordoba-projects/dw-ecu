@@ -34,6 +34,7 @@ class Router
      */
     public function dispatch(string $requestUri, string $requestMethod): void
     {
+        // print_r($this->routes);
         foreach ($this->routes as $route) {
             if ($route['method'] !== strtoupper($requestMethod)) {
                 continue;

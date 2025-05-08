@@ -9,10 +9,33 @@ use Core\Router;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Illuminate\Database\Capsule\Manager as Capsule;
+
+// composer require illuminate/database
+// Inicializa la conexión a la base de datos
+$capsule = new Capsule;
+$capsule->addConnection([
+    'driver' => 'mysql',
+    'host' => 'localhost',
+    'database' => 'digicertificados',
+    'username' => 'root',
+    'password' => 'root',
+    'charset' => 'utf8',
+    'collation' => 'utf8_unicode_ci',
+    'prefix' => '',
+]);
+
+$capsule->setAsGlobal();
+$capsule->bootEloquent();
+
+
+
+
+
 
 // 2. Autocarga de controladores (asume que cada controlador es una clase en controllers/NombreController.php)
 spl_autoload_register(function (string $className) {
-    $file = __DIR__ . '/../controllers/' . $className . '.php';
+    $file = __DIR__ . '/../src/Controllers/' . $className . '.php';
     if (file_exists($file)) {
         require $file;
     }
@@ -24,10 +47,8 @@ $jwtSecret = 'rgjjYtrrfGhjiuYtrDFGhjKoiuYTrfgHJkoiuYTGHjOiuYtGHjI';  // Debe ser
 
 
 // 4. Definición de rutas
-$router->add('login', 'AuthController', 'login', 'POST');
-$router->add('users',      'UsersController', 'index', 'GET');
-$router->add('users/{id}',  'UsersController', 'show',  'GET');
-$router->add('users',      'UsersController', 'store', 'POST');
+include __DIR__ . '/../routes/web.php'; // Rutas de la API REST
+
 
 // — puedes seguir añadiendo más rutas aquí —
 

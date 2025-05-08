@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Models;
+
 class DB{
 
     protected static $connec;

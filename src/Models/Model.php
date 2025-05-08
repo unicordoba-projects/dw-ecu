@@ -1,6 +1,10 @@
 <?php
 
-require_once('../db/DB.php');
+// require_once('../db/DB.php');
+
+namespace App\Models;
+
+use App\Models\DB;
 
 class Model
 {
@@ -16,7 +20,7 @@ class Model
         $sql = "SELECT * FROM {$this->table}";
         $stm = $this->connection->prepare($sql);
         $stm->execute();
-        return $stm->fetchAll(PDO::FETCH_ASSOC);
+        return $stm->fetchAll(\PDO::FETCH_ASSOC);
     }
     
     public function getById($id)
